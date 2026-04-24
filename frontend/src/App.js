@@ -1,213 +1,40 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
+import { motion } from 'framer-motion';
+import { PlayCircle, BrainCircuit } from 'lucide-react';
+
+import LiveAIBrain from './components/LiveAIBrain';
+import AISummaryPanel from './components/AISummaryPanel';
+import InteractiveTimeline from './components/InteractiveTimeline';
+import FloatingAssistant from './components/FloatingAssistant';
+import SmartErrorBoundary from './components/SmartErrorBoundary';
 
 const API = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-
-// ─── SVG ICONS ───────────────────────────────────────────────────────────────
-const IconBrain = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.66Z"/>
-    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.66Z"/>
-  </svg>
-);
-
-const IconPlay = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <polygon points="5 3 19 12 5 21 5 3"/>
-  </svg>
-);
-
-const IconClock = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-  </svg>
-);
-
-const IconList = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
-    <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
-  </svg>
-);
-
-const IconPopout = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="4 14 10 14 10 20"></polyline>
-    <polyline points="20 10 14 10 14 4"></polyline>
-    <line x1="14" y1="10" x2="21" y2="3"></line>
-    <line x1="3" y1="21" x2="10" y2="14"></line>
-  </svg>
-);
-
-const IconExpand = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="15 3 21 3 21 9"></polyline>
-    <polyline points="9 21 3 21 3 15"></polyline>
-    <line x1="21" y1="3" x2="14" y2="10"></line>
-    <line x1="3" y1="21" x2="10" y2="14"></line>
-  </svg>
-);
-
-const IconMinimize = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"></line>
-  </svg>
-);
-
-// ─── UTILS ───────────────────────────────────────────────────────────────────
-function fmtTime(iso) {
-  if (!iso) return '';
-  try { return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch { return iso; }
-}
-
-function fmtDate(iso) {
-  if (!iso) return '';
-  try { return new Date(iso).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch { return iso; }
-}
-
-// ─── SUB-COMPONENTS ──────────────────────────────────────────────────────────
-
-function Spinner() {
-  return (
-    <div className="spinner-wrap">
-      <div className="spinner" />
-      <span>Reconstructing context…</span>
-    </div>
-  );
-}
-
-function SummaryCard({ data, animKey, onPin, pinnedSet }) {
-  const isPinned = pinnedSet.has(data.session_id);
-  const bullets = ['🎯', '⚡', '→'];
-  
-  return (
-    <div className="summary-card" key={animKey}>
-      <div className="card-header">
-        <span className="card-label">AI Context Summary</span>
-        <div className="card-actions">
-          <button 
-            className={`pin-btn ${isPinned ? 'active' : ''}`} 
-            onClick={() => onPin(data)}
-            disabled={isPinned}
-          >
-            {isPinned ? '⭐ Pinned' : '☆ Pin This'}
-          </button>
-        </div>
-      </div>
-      <div className="card-meta" style={{marginBottom: 16}}>
-        <span><IconClock /> {fmtTime(data.time_range?.from)} – {fmtTime(data.time_range?.to)}</span>
-        <span><IconList /> {data.log_count} events</span>
-        <span>Session: {data.session_id}</span>
-      </div>
-      <ul className="bullets">
-        {data.summary.map((line, i) => (
-          <li key={i} className="bullet" style={{ animationDelay: `${i * 120}ms` }}>
-            <span className="bullet-icon">{bullets[i] || '•'}</span>
-            <span>{line}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function TimelineFeed({ logs }) {
-  const [showRaw, setShowRaw] = useState(false);
-  if (!logs.length) return null;
-
-  const interpretLog = (log) => {
-      try {
-          const parsed = typeof log.details === 'string' && log.details.startsWith('{') ? JSON.parse(log.details) : null;
-          const type = parsed?.type || log.type; 
-          const title = parsed?.title || log.title;
-          const file = parsed?.file || log.file;
-          
-          if (type === 'code' || log.action === 'file_modified' || log.action === 'file_edit') return { emoji: '💻', text: `Modified ${file || log.app}` };
-          if (type === 'search' || log.action === 'browser_activity') return { emoji: '🔍', text: `Searched: ${title || parsed?.text || log.details}` };
-          if (log.action === 'app_switch') return { emoji: '🔄', text: `Switched to ${log.app}` };
-          if (log.action === 'session_start') return { emoji: '🟢', text: `Session Started` };
-          
-          return { emoji: '📝', text: `${log.action} in ${log.app}` };
-      } catch {
-          return { emoji: '📝', text: `${log.action} in ${log.app}` };
-      }
-  };
-
-  return (
-    <div className="timeline-section">
-      <div className="section-header">
-        <div className="section-title">Session Timeline</div>
-        <button className="toggle-raw" onClick={() => setShowRaw(!showRaw)}>
-          {showRaw ? "Hide Raw Logs" : "Show Raw Logs"}
-        </button>
-      </div>
-      <div className="timeline-scroll">
-        {logs.slice(-40).reverse().map((log, i) => {
-          const { emoji, text } = interpretLog(log);
-          return (
-            <div key={i} className="timeline-item">
-              <span className="timeline-emoji">{emoji}</span>
-              <div className="timeline-content">
-                <div className="timeline-text">{text}</div>
-                <div className="timeline-time">{fmtTime(log.timestamp)}</div>
-                {showRaw && <div className="timeline-raw">{typeof log.details === 'string' ? log.details : JSON.stringify(log.details)}</div>}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function SavedInsights({ pinned }) {
-  if (!pinned || pinned.length === 0) return null;
-  
-  return (
-    <div className="saved-insights">
-      <div className="section-title">Saved Insights</div>
-      <div className="pinned-grid">
-        {pinned.map((p, i) => (
-          <div key={i} className="pinned-card">
-            <div className="pinned-header">
-              <span className="pinned-date">⭐ {fmtDate(p.timestamp)}</span>
-            </div>
-            <ul className="bullets small">
-              {p.summary.map((line, j) => (
-                <li key={j}>
-                  <span className="bullet-icon">•</span>
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [logs, setLogs] = useState([]);
+  
   const [pinned, setPinned] = useState([]);
   const [pinnedSet, setPinnedSet] = useState(new Set());
-  const [animKey, setAnimKey] = useState(0);
-  const [viewMode, setViewMode] = useState('dashboard'); // 'dashboard' | 'icon' | 'widget'
+
+  // Replay state
+  const [isReplaying, setIsReplaying] = useState(false);
+  const [replayLogs, setReplayLogs] = useState([]);
 
   const fetchSummary = useCallback(async () => {
     setLoading(true);
     setError('');
+    setSummary(null); // Clear old summary for typing effect restart
     try {
       const res = await fetch(`${API}/summary`);
-      if (!res.ok) throw new Error('Failed to fetch summary');
-      const data = await res.json();
-      setSummary(data);
-      setAnimKey(k => k + 1);
+      if (res.ok) {
+        setSummary(await res.json());
+      } else {
+        setError('Failed to generate summary');
+      }
     } catch (e) {
       setError(e.message);
     } finally {
@@ -215,6 +42,13 @@ export default function App() {
     }
   }, []);
 
+  const fetchLogs = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/logs?limit=40`);
+      if (res.ok) setLogs(await res.json());
+    } catch { /* ignore */ }
+  }, []);
+  
   const fetchPinned = useCallback(async () => {
     try {
       const res = await fetch(`${API}/pinned-summaries`);
@@ -226,129 +60,147 @@ export default function App() {
     } catch { /* ignore */ }
   }, []);
 
-  const fetchLogs = useCallback(async () => {
-    try {
-      const res = await fetch(`${API}/logs?limit=40`);
-      if (res.ok) setLogs(await res.json());
-    } catch { /* ignore */ }
-  }, []);
-
-  const handlePin = async (data) => {
-    try {
-      await fetch(`${API}/pin-summary`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          summary: data.summary,
-          timestamp: new Date().toISOString(),
-          session_id: data.session_id
-        })
-      });
-      fetchPinned();
-    } catch (e) {
-      console.error('Failed to pin', e);
-    }
-  };
-
   useEffect(() => {
     fetchLogs();
     fetchPinned();
-    const id = setInterval(fetchLogs, 5000);
+    const id = setInterval(() => {
+        fetchLogs();
+        fetchPinned();
+    }, 5000);
     return () => clearInterval(id);
   }, [fetchLogs, fetchPinned]);
 
-  // Render Icon Mode
-  if (viewMode === 'icon') {
-    return (
-      <div className="app">
-        <div className="noise" />
-        <button className="floating-icon-btn" onClick={() => setViewMode('widget')} title="Open Assistant">
-          <IconBrain />
-        </button>
-      </div>
-    );
-  }
+  const handlePin = async (summaryData) => {
+    if (pinnedSet.has(summaryData.session_id)) return;
+    try {
+      const res = await fetch(`${API}/pin-summary`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          summary: summaryData.summary,
+          session_id: summaryData.session_id,
+          timestamp: summaryData.time_range?.to || new Date().toISOString()
+        })
+      });
+      if (res.ok) {
+        setPinnedSet(new Set([...pinnedSet, summaryData.session_id]));
+        fetchPinned();
+      }
+    } catch (e) {
+      console.error("Failed to pin summary", e);
+    }
+  };
 
-  // Render Widget Mode
-  if (viewMode === 'widget') {
-    return (
-      <div className="app">
-        <div className="noise" />
-        <div className="floating-widget">
-          <div className="float-header">
-            <span><IconBrain /> NeuroTrace</span>
-            <div className="float-actions">
-              <button className="close-float" onClick={() => setViewMode('dashboard')} title="Expand to Dashboard">
-                <IconExpand />
-              </button>
-              <button className="close-float" onClick={() => setViewMode('icon')} title="Minimize to Icon">
-                <IconMinimize />
-              </button>
-            </div>
-          </div>
-          <div className="float-content">
-            <button className={`resume-btn float-btn ${loading ? 'loading' : ''}`} onClick={fetchSummary} disabled={loading}>
-              {loading ? 'Analyzing...' : '🧠 Resume'}
-            </button>
-            <div className="float-summary">
-              {summary ? (
-                <ul className="bullets small">
-                  {summary.summary.map((line, i) => <li key={i}>{line}</li>)}
-                </ul>
-              ) : <div style={{opacity: 0.6}}>Click resume to catch up.</div>}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Handle Replay Session
+  const handleReplay = () => {
+    if (logs.length === 0 || isReplaying) return;
+    setIsReplaying(true);
+    setReplayLogs([]);
+    
+    // Sort logs chronologically for playback
+    const sorted = [...logs].reverse();
+    
+    sorted.forEach((log, index) => {
+      setTimeout(() => {
+        setReplayLogs(prev => [...prev, log]);
+        if (index === sorted.length - 1) {
+          setTimeout(() => setIsReplaying(false), 2000);
+        }
+      }, index * 800); // 800ms delay between events
+    });
+  };
 
-  // Main Dashboard UI
+  const displayLogs = isReplaying ? replayLogs : logs;
+
   return (
-    <div className="app">
-      <div className="noise" />
+    <SmartErrorBoundary>
+      <div className="min-h-screen relative overflow-hidden bg-dark-bg text-gray-200">
+        {/* Background gradient effects */}
+        <div className="absolute top-0 left-0 w-full h-96 bg-primary-main/5 blur-[150px] -z-10" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-main/5 blur-[150px] -z-10" />
 
-      <header className="navbar">
-        <div className="logo">
-          <IconBrain />
-          <span>NeuroTrace AI</span>
-        </div>
-        <div className="nav-actions">
-          <button className="popout-btn" onClick={() => setViewMode('icon')} title="Minimize to Floating Icon">
-            <IconPopout />
-          </button>
-          <button className={`resume-btn ${loading ? 'loading' : ''}`} onClick={fetchSummary} disabled={loading}>
-            {loading ? <><div className="btn-spinner" /> Analyzing…</> : <><IconPlay /> Resume Session</>}
-          </button>
-        </div>
-      </header>
-
-      <main className="main-content">
-        {error && <div className="error-card"><strong>Error:</strong> {error}</div>}
-        
-        {loading && <Spinner />}
-
-        <div className="dashboard-grid">
-          <div className="main-column">
-            {!loading && summary && (
-              <SummaryCard data={summary} animKey={animKey} onPin={handlePin} pinnedSet={pinnedSet} />
-            )}
-            
-            {!loading && !summary && !error && (
-              <div className="empty-state">
-                <div className="empty-icon">◉</div>
-                <p>Click <strong>Resume Session</strong> to generate your AI context summary.</p>
-              </div>
-            )}
-            
-            <TimelineFeed logs={logs} />
+        {/* Top Navbar */}
+        <header className="glass-panel mx-6 mt-6 p-4 rounded-2xl flex items-center justify-between z-10 relative">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-dark-bg rounded-xl border border-dark-border">
+              <BrainCircuit className="text-secondary-main" size={24} />
+            </div>
+            <h1 className="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+              NEUROTRACE<span className="text-primary-main">.AI</span>
+            </h1>
           </div>
 
-          <div className="side-column">
-            <SavedInsights pinned={pinned} />
+          <div className="flex gap-4">
+            <button 
+              onClick={handleReplay}
+              disabled={isReplaying || logs.length === 0}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                isReplaying 
+                  ? 'bg-secondary-main/20 text-secondary-main border border-secondary-main/50' 
+                  : 'bg-dark-surface border border-dark-border hover:border-secondary-main/50 text-gray-300'
+              }`}
+            >
+              <PlayCircle size={18} className={isReplaying ? 'animate-pulse' : ''} />
+              {isReplaying ? 'Replaying...' : 'Replay Session'}
+            </button>
+
+            <button 
+              onClick={fetchSummary}
+              disabled={loading}
+              className="btn-primary flex items-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Synthesizing...
+                </>
+              ) : (
+                <>
+                  <BrainCircuit size={18} />
+                  Extract Context
+                </>
+              )}
+            </button>
           </div>
-        </div>
-      </main>
-    </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="max-w-6xl mx-auto px-6 py-8 relative z-10">
+          
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+              className="glass-panel p-4 mb-8 border-red-500/30 text-red-400 text-center"
+            >
+              System Error: {error}
+            </motion.div>
+          )}
+
+          <LiveAIBrain isProcessing={loading || isReplaying} />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-7">
+              {summary && <AISummaryPanel data={summary} onPin={handlePin} pinnedSet={pinnedSet} />}
+              
+              {!summary && !loading && (
+                <div className="glass-panel p-8 text-center border-dashed border-dark-border mb-8">
+                  <BrainCircuit className="mx-auto text-gray-600 mb-4" size={48} />
+                  <h3 className="text-xl font-semibold text-gray-300 mb-2">Awaiting Neural Context</h3>
+                  <p className="text-gray-500 max-w-sm mx-auto">
+                    Click "Extract Context" to analyze your recent workflow and generate intelligent insights.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="lg:col-span-5">
+              <InteractiveTimeline logs={displayLogs} />
+            </div>
+          </div>
+        </main>
+
+        <FloatingAssistant />
+      </div>
+    </SmartErrorBoundary>
   );
 }
