@@ -525,3 +525,23 @@ async def get_pinned_summaries():
 @app.get("/health")
 async def health():
     return {"status": "ok", "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z")}
+
+@app.post("/launch-widget", status_code=200)
+async def launch_widget():
+    """Launch the floating_window.py script as an OS-level always-on-top window."""
+    try:
+        import subprocess
+        import os
+        
+        # Determine the absolute path to floating_window.py
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        root_dir = os.path.dirname(current_dir)
+        script_path = os.path.join(root_dir, "floating_window.py")
+        
+        # Use subprocess.Popen to launch it asynchronously
+        subprocess.Popen(["python", script_path], cwd=root_dir)
+        
+        return {"status": "success", "message": "Floating window launched successfully."}
+    except Exception as e:
+        logger.error(f"Failed to launch widget: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to launch widget: {e}")
