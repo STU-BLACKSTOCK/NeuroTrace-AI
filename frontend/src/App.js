@@ -80,6 +80,49 @@ function SummaryCard({ data, animKey, onPin, pinnedSet }) {
   const isPinned = pinnedSet.has(data.session_id);
   const bullets = ['🎯', '⚡', '→'];
   
+  const [isExpanding, setIsExpanding] = useState(false);
+  const [expandedText, setExpandedText] = useState(null);
+
+  const handleExpand = async () => {
+    setIsExpanding(true);
+    try {
+      const res = await fetch(`${API}/summary/expand?session_id=${encodeURIComponent(data.session_id)}`);
+      if (res.ok) {
+        const json = await res.json();
+        setExpandedText(json.expanded_summary);
+      }
+    } catch (e) {
+      console.error(e);
+      setExpandedText("⚠ Failed to load detailed insight.");
+    } finally {
+      setIsExpanding(false);
+    }
+  };
+
+  // Generate Action Buttons
+  const actionButtons = [];
+  const fullText = data.summary.join(" ");
+  
+  // File extraction (.py, .js, .tsx, etc)
+  const fileMatches = fullText.match(/[A-Za-z0-9_-]+\.(py|js|ts|jsx|tsx|css|html)/g);
+  if (fileMatches && fileMatches.length > 0) {
+    const uniqueFiles = [...new Set(fileMatches)];
+    actionButtons.push({
+      label: `📂 Open ${uniqueFiles[0]}`,
+      action: () => alert(`Simulated opening of ${uniqueFiles[0]} in your editor...`)
+    });
+  }
+  
+  // Search extraction (from last bullet "Next step")
+  const nextStepText = data.summary[2] || "";
+  if (nextStepText) {
+     const cleanQuery = nextStepText.replace(/next:|next step:|try to|check/gi, "").trim();
+     actionButtons.push({
+       label: `🔍 Search Solution`,
+       action: () => window.open(`https://www.google.com/search?q=${encodeURIComponent(cleanQuery)}`, '_blank')
+     });
+  }
+
   return (
     <div className="summary-card" key={animKey}>
       <div className="card-header">
@@ -107,13 +150,36 @@ function SummaryCard({ data, animKey, onPin, pinnedSet }) {
           </li>
         ))}
       </ul>
+      
+      {/* Interaction Layer */}
+      <div className="summary-interactions">
+         {!expandedText && (
+            <button className="explain-more-btn" onClick={handleExpand} disabled={isExpanding}>
+              {isExpanding ? "Analyzing..." : "Explain More"}
+            </button>
+         )}
+         
+         {expandedText && (
+            <div className="expanded-insight">
+               <div className="insight-label">Detailed Insight</div>
+               <p>{expandedText}</p>
+            </div>
+         )}
+         
+         <div className="action-buttons">
+            {actionButtons.map((btn, idx) => (
+               <button key={idx} className="action-btn" onClick={btn.action}>
+                 {btn.label}
+               </button>
+            ))}
+         </div>
+      </div>
     </div>
   );
 }
 
-function TimelineFeed({ logs }) {
+function TimelineItem({ log, isExpanded, onToggle }) {
   const [showRaw, setShowRaw] = useState(false);
-  if (!logs.length) return null;
 
   const interpretLog = (log) => {
       try {
@@ -121,40 +187,108 @@ function TimelineFeed({ logs }) {
           const type = parsed?.type || log.type; 
           const title = parsed?.title || log.title;
           const file = parsed?.file || log.file;
+          const snippet = parsed?.snippet;
           
-          if (type === 'code' || log.action === 'file_modified' || log.action === 'file_edit') return { emoji: '💻', text: `Modified ${file || log.app}` };
-          if (type === 'search' || log.action === 'browser_activity') return { emoji: '🔍', text: `Searched: ${title || parsed?.text || log.details}` };
-          if (log.action === 'app_switch') return { emoji: '🔄', text: `Switched to ${log.app}` };
-          if (log.action === 'session_start') return { emoji: '🟢', text: `Session Started` };
+          if (type === 'code' || log.action === 'file_modified' || log.action === 'file_edit') {
+            return { type: 'code', emoji: '💻', text: `Modified ${file || log.app}`, data: { file: file || log.app, snippet: snippet } };
+          }
+          if (type === 'search' || log.action === 'browser_activity') {
+             return { type: 'search', emoji: '🔍', text: `Searched: ${title || parsed?.text || log.details}`, data: { query: title || parsed?.text || log.details, source: log.app } };
+          }
+          if (log.action === 'app_switch') {
+             return { type: 'app', emoji: '🔄', text: `Switched to ${log.app}`, data: { app: log.app, action: log.action } };
+          }
+          if (log.action === 'session_start') {
+             return { type: 'info', emoji: '🟢', text: `Session Started`, data: null };
+          }
           
-          return { emoji: '📝', text: `${log.action} in ${log.app}` };
+          return { type: 'info', emoji: '📝', text: `${log.action} in ${log.app}`, data: null };
       } catch {
-          return { emoji: '📝', text: `${log.action} in ${log.app}` };
+          return { type: 'info', emoji: '📝', text: `${log.action} in ${log.app}`, data: null };
       }
   };
+
+  const { type, emoji, text, data } = interpretLog(log);
+
+  return (
+    <div className={`timeline-item ${isExpanded ? 'expanded' : ''}`}>
+      <div className="timeline-header" onClick={onToggle}>
+        <span className="timeline-emoji">{emoji}</span>
+        <div className="timeline-title-row">
+           <span className="timeline-text">{text}</span>
+           <div className="timeline-meta">
+              <span className="timeline-time">{fmtTime(log.timestamp)}</span>
+              <span className="timeline-toggle-icon">{isExpanded ? '▲' : '▼'}</span>
+           </div>
+        </div>
+      </div>
+      
+      <div className="timeline-details">
+        <div className="details-content">
+          {type === 'code' && data?.file && (
+            <div className="detail-section">
+              <div className="detail-row"><strong>File:</strong> {data.file}</div>
+              {data.snippet && (
+                <>
+                  <div className="detail-row"><strong>Snippet:</strong></div>
+                  <pre className="detail-snippet">{data.snippet.slice(0, 300)}{data.snippet.length > 300 ? '...' : ''}</pre>
+                </>
+              )}
+            </div>
+          )}
+          {type === 'search' && (
+            <div className="detail-section">
+              <div className="detail-row"><strong>Search Query:</strong> {data.query}</div>
+              <div className="detail-row"><strong>Source:</strong> {data.source}</div>
+            </div>
+          )}
+          {type === 'app' && (
+            <div className="detail-section">
+              <div className="detail-row"><strong>App:</strong> {data.app}</div>
+              <div className="detail-row"><strong>Action:</strong> Switched window focus</div>
+            </div>
+          )}
+          {type === 'info' && (
+            <div className="detail-section">
+              <div className="detail-row"><strong>Event:</strong> {log.action}</div>
+            </div>
+          )}
+          
+          <div className="raw-toggle-container">
+            <button className="raw-toggle-btn" onClick={(e) => { e.stopPropagation(); setShowRaw(!showRaw); }}>
+              {showRaw ? "Hide Raw JSON" : "Show Raw JSON"}
+            </button>
+            {showRaw && (
+              <pre className="detail-snippet raw-json">
+                {typeof log.details === 'string' ? log.details : JSON.stringify(log.details, null, 2)}
+              </pre>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TimelineFeed({ logs }) {
+  const [expandedIndex, setExpandedIndex] = useState(null);
+
+  if (!logs.length) return null;
 
   return (
     <div className="timeline-section">
       <div className="section-header">
         <div className="section-title">Session Timeline</div>
-        <button className="toggle-raw" onClick={() => setShowRaw(!showRaw)}>
-          {showRaw ? "Hide Raw Logs" : "Show Raw Logs"}
-        </button>
       </div>
       <div className="timeline-scroll">
-        {logs.slice(-40).reverse().map((log, i) => {
-          const { emoji, text } = interpretLog(log);
-          return (
-            <div key={i} className="timeline-item">
-              <span className="timeline-emoji">{emoji}</span>
-              <div className="timeline-content">
-                <div className="timeline-text">{text}</div>
-                <div className="timeline-time">{fmtTime(log.timestamp)}</div>
-                {showRaw && <div className="timeline-raw">{typeof log.details === 'string' ? log.details : JSON.stringify(log.details)}</div>}
-              </div>
-            </div>
-          );
-        })}
+        {logs.slice(-40).reverse().map((log, i) => (
+          <TimelineItem 
+            key={i} 
+            log={log} 
+            isExpanded={expandedIndex === i} 
+            onToggle={() => setExpandedIndex(expandedIndex === i ? null : i)} 
+          />
+        ))}
       </div>
     </div>
   );

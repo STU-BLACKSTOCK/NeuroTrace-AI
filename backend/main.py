@@ -228,6 +228,38 @@ Logs:
             f"Details: {str(e)[:100]}",
         ]
 
+async def call_gemini_expand(prompt: str, original_summary: List[str]) -> str:
+    """Call Google Gemini API for an expanded explanation."""
+    if not gemini_client:
+        return "⚠ GEMINI_API_KEY not set – AI summary unavailable."
+
+    summary_text = "\n".join([f"- {s}" for s in original_summary])
+    
+    prompt_template = f"""You are an AI assistant expanding a user's work session summary.
+
+Given the original summary and activity logs, provide a deeper explanation:
+* Explain what the user was trying to achieve
+* Explain why their attempts may have failed
+* Provide a more detailed reasoning of next steps
+
+Keep it clear and structured, but more detailed than the original summary. Do not use Markdown formatting like bold or headers, just plain text paragraphs.
+
+Original Summary:
+{summary_text}
+
+Logs:
+{prompt}
+"""
+    try:
+        response = await gemini_client.aio.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=prompt_template
+        )
+        return response.text.strip()
+    except Exception as e:
+        logger.error(f"Gemini API error (expand): {e}")
+        return f"⚠ Failed to generate expanded summary: {str(e)[:100]}"
+
 
 # ─── ROUTES ───────────────────────────────────────────────────────────────────
 
@@ -366,6 +398,55 @@ async def get_summary():
         log_count=len(logs),
         time_range=time_range,
     )
+
+@app.get("/summary/expand")
+async def expand_summary(session_id: Optional[str] = None):
+    """Generate a deeper AI explanation of the session logs."""
+    conn = get_db()
+    if session_id:
+        rows = conn.execute(
+            "SELECT * FROM logs WHERE session_id=? ORDER BY received_at DESC LIMIT ?",
+            (session_id, MAX_LOGS_PER_SUMMARY),
+        ).fetchall()
+        logs = [dict(r) for r in rows]
+        logs.reverse()
+        logs = deduplicate_logs(logs)
+    else:
+        logs, session_id = latest_session_logs(conn)
+    conn.close()
+
+    if not logs:
+        raise HTTPException(status_code=404, detail="No logs found.")
+
+    # Get the original summary logic (just the bullets) to feed into the prompt
+    # In a real system, we might cache this, but for now we regenerate it
+    lines = []
+    for log in logs:
+        details_text = log['details']
+        extra = ""
+        try:
+            parsed = json.loads(details_text)
+            if isinstance(parsed, dict) and "text" in parsed:
+                details_text = parsed["text"]
+                if "snippet" in parsed:
+                    extra += f"\n  [Code Snippet from {parsed.get('file', 'file')}]:\n  {parsed['snippet']}"
+                if "title" in parsed:
+                    extra += f"\n  [Search Title]: {parsed['title']}"
+        except (json.JSONDecodeError, TypeError):
+            pass
+            
+        lines.append(
+            f"[{log['timestamp']}] {log['action']} | App: {log['app']} | {details_text}{extra}"
+        )
+    prompt = "\n".join(lines)
+    
+    # Generate the brief summary first
+    original_summary = await call_gemini(prompt)
+    
+    # Now generate the expanded explanation
+    expanded = await call_gemini_expand(prompt, original_summary)
+    
+    return {"expanded_summary": expanded}
 
 
 @app.get("/logs")
