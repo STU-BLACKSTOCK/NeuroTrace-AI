@@ -1,0 +1,4 @@
+psutil>=5.9.0
+pygetwindow>=0.0.9
+watchdog>=3.0.0
+requests>=2.31.0

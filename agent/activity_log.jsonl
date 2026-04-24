@@ -1,0 +1,173 @@
+{"timestamp": "2026-04-24T06:05:06.419404Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:05:10.045803Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:05:39.906637Z", "app": "", "action": "app_focus", "details": " | Untitled - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:05:45.505051Z", "app": "", "action": "app_focus", "details": " | localhost - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:05:50.320768Z", "app": "", "action": "app_focus", "details": " | Untitled - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:05:57.632411Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:06:12.485299Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:02.389202Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:33.157250Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:38.020500Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:42.788854Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:50.069469Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:07:55.070784Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:08:04.826059Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:08:37.361051Z", "app": "", "action": "app_focus", "details": " | API Keys | Settings | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:08:42.194313Z", "app": "", "action": "app_focus", "details": " | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:08:52.068364Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:05.216082Z", "app": "", "action": "app_focus", "details": " | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:10.180059Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:20.191165Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:25.260412Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:47.586375Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:09:55.141788Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:00.383921Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:05.197530Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:15.014626Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:20.964552Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:28.280193Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:33.250456Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:45.580404Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:50.453171Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:10:55.268337Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:11:00.051587Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:12:29.862924Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:12:58.136635Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:13:03.370016Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:13:30.698244Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:13:41.453569Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:14:01.608910Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_060506"}
+{"timestamp": "2026-04-24T06:14:16.699985Z", "app": "System", "action": "agent_stop", "details": "Agent stopped."}
+{"timestamp": "2026-04-24T06:16:22.346574Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_061622"}
+{"timestamp": "2026-04-24T06:16:25.366471Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_061622"}
+{"timestamp": "2026-04-24T06:16:40.118385Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_061622"}
+{"timestamp": "2026-04-24T06:17:03.007932Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_061622"}
+{"timestamp": "2026-04-24T06:18:50.859271Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_061622"}
+{"timestamp": "2026-04-24T06:19:07.331641Z", "app": "System", "action": "agent_stop", "details": "Agent stopped."}
+{"timestamp": "2026-04-24T06:22:08.447633Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:22:12.551518Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:22:24.156224Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:22:43.263907Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:23:39.882457Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:24:00.947401Z", "app": "", "action": "app_focus", "details": " | New Tab - Google Chrome", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:24:06.187087Z", "app": "", "action": "app_focus", "details": " | Google Gemini - Google Chrome", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:24:48.470867Z", "app": "", "action": "app_focus", "details": " | Gemini API Model Name Update - Google Gemini - Google Chrome", "session_id": "session_20260424_062208"}
+{"timestamp": "2026-04-24T06:30:46.987915Z", "app": "System", "action": "session_start", "details": "New session after 358s idle. ID=session_20260424_063046"}
+{"timestamp": "2026-04-24T06:30:46.987915Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:30:55.093825Z", "app": "", "action": "app_focus", "details": " | Gemini API Model Name Update - Google Gemini - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:30:59.906453Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:31:47.236992Z", "app": "", "action": "app_focus", "details": " | Gemini API Model Name Update - Google Gemini - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:31:52.806930Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:32:05.371649Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:32:33.610185Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:32:39.028878Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:32:43.841522Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:32:53.629183Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:33:08.697203Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:33:36.059482Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:35:08.950106Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:35:19.169780Z", "app": "", "action": "app_focus", "details": " | PROJECT brief - Word", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:35:24.409613Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:35:31.016908Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:35:45.127766Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:04.385090Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:20.997708Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:27.602846Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:41.698737Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:48.294409Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:40:59.884059Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:41:08.993072Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:42:18.167320Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:42:34.755428Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:42:41.347376Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:42:47.958306Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:42:54.577466Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:43:08.714829Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:43:22.818793Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:43:41.935716Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:43:53.534299Z", "app": "", "action": "app_focus", "details": " | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:44:02.649757Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:44:09.250730Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:44:15.832816Z", "app": "", "action": "app_focus", "details": " | Resume My Work - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:44:52.351694Z", "app": "", "action": "app_focus", "details": " | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:45:15.464417Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_063046"}
+{"timestamp": "2026-04-24T06:58:52.515459Z", "app": "System", "action": "session_start", "details": "New session after 817s idle. ID=session_20260424_065852"}
+{"timestamp": "2026-04-24T06:58:52.515459Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T06:59:03.237689Z", "app": "System", "action": "app_focus", "details": "System | System tray overflow window.", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:00:29.889238Z", "app": "", "action": "app_switch", "details": "System \u2192  | activity_logs | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:00:38.988972Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:00:45.604496Z", "app": "", "action": "app_focus", "details": " | Anthropic API Key - Google Chrome", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:00:52.215551Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:01:51.360351Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:01:57.970440Z", "app": "", "action": "app_focus", "details": " | Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_065852"}
+{"timestamp": "2026-04-24T07:09:29.868135Z", "app": "System", "action": "session_start", "details": "New session after 451s idle. ID=session_20260424_070929"}
+{"timestamp": "2026-04-24T07:09:29.868135Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_070929"}
+{"timestamp": "2026-04-24T07:12:28.213512Z", "app": "", "action": "app_focus", "details": " | Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_070929"}
+{"timestamp": "2026-04-24T07:15:04.936803Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_070929"}
+{"timestamp": "2026-04-24T07:15:16.553505Z", "app": "", "action": "app_focus", "details": " | Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_070929"}
+{"timestamp": "2026-04-24T07:21:40.881831Z", "app": "System", "action": "session_start", "details": "New session after 384s idle. ID=session_20260424_072140"}
+{"timestamp": "2026-04-24T07:21:40.881831Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_072140"}
+{"timestamp": "2026-04-24T07:23:26.686334Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Implementation Plan", "session_id": "session_20260424_072140"}
+{"timestamp": "2026-04-24T07:34:16.118039Z", "app": "System", "action": "session_start", "details": "New session after 649s idle. ID=session_20260424_073416"}
+{"timestamp": "2026-04-24T07:34:16.118039Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073416"}
+{"timestamp": "2026-04-24T07:35:20.645142Z", "app": "System", "action": "agent_stop", "details": "Agent stopped."}
+{"timestamp": "2026-04-24T07:35:27.090871Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_073527"}
+{"timestamp": "2026-04-24T07:35:31.216583Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073527"}
+{"timestamp": "2026-04-24T07:35:45.213266Z", "app": "System", "action": "agent_stop", "details": "Agent stopped."}
+{"timestamp": "2026-04-24T07:35:54.658174Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:35:57.020595Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:36:08.631231Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:36:29.992862Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:36:39.850376Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:39:48.125080Z", "app": "", "action": "browser_activity", "details": " | Anthropic API Key - Google Chrome", "type": "search", "title": "Anthropic API Key - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:39:55.804399Z", "app": "", "action": "browser_activity", "details": " | Hackathon MVP Scope - Google Chrome", "type": "search", "title": "Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:41:11.541391Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:41:16.862246Z", "app": "", "action": "app_focus", "details": " | WhatsApp", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:41:24.173981Z", "app": "", "action": "browser_activity", "details": " | Hackathon MVP Scope - Google Chrome", "type": "search", "title": "Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:09.817206Z", "app": "", "action": "browser_activity", "details": " | STU-BLACKSTOCK/NeuroTrace-AI: Captures and reconstructs the mental trail behind your work, helping you pick up exactly where you left off. - Google Chrome", "type": "search", "title": "STU-BLACKSTOCK/NeuroTrace-AI: Captures and reconstructs the mental trail behind your work, helping you pick up exactly where you left off. - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:17.607697Z", "app": "", "action": "browser_activity", "details": " | Branches \u00b7 STU-BLACKSTOCK/NeuroTrace-AI - Google Chrome", "type": "search", "title": "Branches \u00b7 STU-BLACKSTOCK/NeuroTrace-AI - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:22.661879Z", "app": "", "action": "browser_activity", "details": " | STU-BLACKSTOCK/NeuroTrace-AI: Captures and reconstructs the mental trail behind your work, helping you pick up exactly where you left off. - Google Chrome", "type": "search", "title": "STU-BLACKSTOCK/NeuroTrace-AI: Captures and reconstructs the mental trail behind your work, helping you pick up exactly where you left off. - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:27.730371Z", "app": "", "action": "app_focus", "details": " | WhatsApp", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:32.513241Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:42:44.851390Z", "app": "", "action": "browser_activity", "details": " | Hackathon MVP Scope - Google Chrome", "type": "search", "title": "Hackathon MVP Scope - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:45:27.255200Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:45:40.261853Z", "app": "", "action": "browser_activity", "details": " | New Tab - Google Chrome", "type": "search", "title": "New Tab - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:45:45.509368Z", "app": "", "action": "browser_activity", "details": " | where is raining now - Google Search - Google Chrome", "type": "search", "title": "where is raining now - Google Search - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:45:50.313474Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:46:05.079418Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:46:11.698173Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T07:46:18.300425Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_073554"}
+{"timestamp": "2026-04-24T08:35:26.766266Z", "app": "System", "action": "session_start", "details": "New session after 2948s idle. ID=session_20260424_083526"}
+{"timestamp": "2026-04-24T08:35:26.766266Z", "app": "", "action": "app_focus", "details": " | Quick settings", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:36:12.545092Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:36:19.152891Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Walkthrough", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:37:53.300457Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - requirements.txt", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:37:59.879630Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - floating_window.py", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:38:06.492979Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - Task", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:38:13.101672Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:38:44.693604Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:39:23.911090Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:39:32.074115Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:39:57.882543Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:40:10.332621Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:40:30.564952Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:41:01.453631Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - floating_window.py", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:41:07.057216Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity", "session_id": "session_20260424_083526"}
+{"timestamp": "2026-04-24T08:44:45.592335Z", "app": "System", "action": "agent_stop", "details": "Agent stopped."}
+{"timestamp": "2026-04-24T11:07:05.100524Z", "app": "System", "action": "agent_start", "details": "Agent started. Watching: C:\\Users\\visha\\Documents", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:07:08.835718Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:07:31.088464Z", "app": "", "action": "browser_activity", "details": " | Untitled - Google Chrome", "type": "search", "title": "Untitled - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:07:36.730652Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:07:56.549253Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:08:02.226638Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:08:37.020415Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:08:42.674008Z", "app": "", "action": "browser_activity", "details": " | Resume My Work - Google Chrome", "type": "search", "title": "Resume My Work - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:09:57.533449Z", "app": "", "action": "browser_activity", "details": " | pinned_summaries | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "type": "search", "title": "pinned_summaries | Table Editor | STU-BLACKSTOCK's Project | STU-BLACKSTOCK's Org | Supabase - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:10:02.821620Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:10:16.922789Z", "app": "", "action": "browser_activity", "details": " | New Tab - Google Chrome", "type": "search", "title": "New Tab - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:11:06.062225Z", "app": "", "action": "browser_activity", "details": " | how to push a huge project to github if i am the contributer and i did 90 percent without a single push - Google Search - Google Chrome", "type": "search", "title": "how to push a huge project to github if i am the contributer and i did 90 percent without a single push - Google Search - Google Chrome", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:12:10.203280Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:13:04.334399Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - .gitignore", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:13:13.438589Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:13:42.546032Z", "app": "", "action": "app_focus", "details": " | Unknown", "session_id": "session_20260424_110705"}
+{"timestamp": "2026-04-24T11:14:04.124403Z", "app": "", "action": "app_focus", "details": " | MYPROJECT-V - Antigravity - README.md", "session_id": "session_20260424_110705"}
