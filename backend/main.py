@@ -501,6 +501,21 @@ async def pin_summary(pinned: PinnedSummary):
             
     return {"status": "ok"}
 
+@app.delete("/pin-summary/{summary_id}", status_code=200)
+async def delete_pinned_summary(summary_id: int):
+    conn = get_db()
+    conn.execute("DELETE FROM pinned_summaries WHERE id = ?", (summary_id,))
+    conn.commit()
+    conn.close()
+    
+    if supabase:
+        try:
+            supabase.table("pinned_summaries").delete().eq("id", summary_id).execute()
+        except Exception as e:
+            logger.error(f"Supabase delete failed for pin-summary: {e}")
+            
+    return {"status": "success", "message": "Summary deleted"}
+
 @app.get("/pinned-summaries")
 async def get_pinned_summaries():
     conn = get_db()
@@ -528,15 +543,15 @@ async def health():
 
 @app.post("/launch-widget", status_code=200)
 async def launch_widget():
-    """Launch the floating_window.py script as an OS-level always-on-top window."""
+    """Launch the widget.py script as an OS-level always-on-top window."""
     try:
         import subprocess
         import os
         
-        # Determine the absolute path to floating_window.py
+        # Determine the absolute path to widget.py
         current_dir = os.path.dirname(os.path.abspath(__file__))
         root_dir = os.path.dirname(current_dir)
-        script_path = os.path.join(root_dir, "floating_window.py")
+        script_path = os.path.join(root_dir, "widget.py")
         
         # Use subprocess.Popen to launch it asynchronously
         subprocess.Popen(["python", script_path], cwd=root_dir)

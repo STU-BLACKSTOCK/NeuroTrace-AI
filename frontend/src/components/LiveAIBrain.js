@@ -4,7 +4,7 @@ import { BrainCircuit } from 'lucide-react';
 
 export default function LiveAIBrain({ isProcessing }) {
   return (
-    <div className="relative w-full h-64 flex items-center justify-center overflow-hidden rounded-2xl glass-panel mb-8">
+    <div className="relative w-full h-full min-h-[300px] flex items-center justify-center overflow-hidden rounded-2xl glass-panel flex-1">
       {/* Background glow */}
       <motion.div
         className="absolute w-64 h-64 bg-primary-main/20 rounded-full blur-3xl"

@@ -4,6 +4,12 @@ import { Clock, Code, Search, RefreshCw, Activity, ChevronRight } from 'lucide-r
 
 export default function InteractiveTimeline({ logs }) {
   const [expandedId, setExpandedId] = useState(null);
+  const [showJsonMap, setShowJsonMap] = useState({});
+
+  const toggleJson = (e, id) => {
+    e.stopPropagation();
+    setShowJsonMap(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   if (!logs || logs.length === 0) return null;
 
@@ -93,10 +99,17 @@ export default function InteractiveTimeline({ logs }) {
                            )}
                            
                            <div className="pt-2 mt-2 border-t border-gray-800">
-                             <div className="text-[10px] text-gray-600 mb-1">RAW JSON</div>
-                             <pre className="font-mono text-[10px] text-blue-400/70 overflow-x-auto">
-                               {typeof log.details === 'string' ? log.details : JSON.stringify(log.details, null, 2)}
-                             </pre>
+                             <button 
+                               onClick={(e) => toggleJson(e, i)}
+                               className="text-[10px] text-gray-500 hover:text-gray-300 font-semibold mb-2 bg-dark-bg px-2 py-1 rounded"
+                             >
+                               {showJsonMap[i] ? 'Hide Original JSON' : 'Show Original JSON'}
+                             </button>
+                             {showJsonMap[i] && (
+                               <pre className="font-mono text-[10px] text-blue-400/70 overflow-x-auto bg-dark-bg p-2 rounded">
+                                 {typeof log.details === 'string' ? log.details : JSON.stringify(log.details, null, 2)}
+                               </pre>
+                             )}
                            </div>
                         </div>
                       </motion.div>

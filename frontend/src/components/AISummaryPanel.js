@@ -74,7 +74,7 @@ export default function AISummaryPanel({ data, onPin, pinnedSet }) {
   if (!summary) return null;
 
   return (
-    <div className="glass-panel p-4 mb-8 relative overflow-hidden flex flex-col mx-auto rounded-xl w-full" style={{ maxWidth: '600px' }}>
+    <div className="glass-panel p-4 relative overflow-hidden flex flex-col mx-auto rounded-xl w-full h-full flex-1" style={{ maxWidth: '600px' }}>
       <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary-main to-secondary-main" />
       
       <div className="flex items-center justify-between mb-6">

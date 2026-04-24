@@ -8,6 +8,7 @@ import AISummaryPanel from './components/AISummaryPanel';
 import InteractiveTimeline from './components/InteractiveTimeline';
 import FloatingAssistant from './components/FloatingAssistant';
 import SmartErrorBoundary from './components/SmartErrorBoundary';
+import SavedSummaries from './components/SavedSummaries';
 
 const API = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
@@ -19,6 +20,8 @@ export default function App() {
   
   const [pinned, setPinned] = useState([]);
   const [pinnedSet, setPinnedSet] = useState(new Set());
+
+  const [activeTab, setActiveTab] = useState("events"); // 'events' | 'saved'
 
   // Replay state
   const [isReplaying, setIsReplaying] = useState(false);
@@ -165,25 +168,30 @@ export default function App() {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-6xl mx-auto px-6 py-8 relative z-10">
+        <main className="max-w-7xl mx-auto px-6 py-8 relative z-10 space-y-12">
           
           {error && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-              className="glass-panel p-4 mb-8 border-red-500/30 text-red-400 text-center"
+              className="glass-panel p-4 border-red-500/30 text-red-400 text-center"
             >
               System Error: {error}
             </motion.div>
           )}
 
-          <LiveAIBrain isProcessing={loading || isReplaying} />
+          {/* Top Section: Split Layout */}
+          <div className="flex flex-col lg:flex-row gap-8 items-stretch justify-center">
+            {/* Left: Neural Link Animation */}
+            <div className="w-full lg:w-1/2 flex flex-col flex-1">
+              <LiveAIBrain isProcessing={loading || isReplaying} />
+            </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7">
+            {/* Right: AI Context Synthesis */}
+            <div className="w-full lg:w-1/2 flex flex-col flex-1">
               {summary && <AISummaryPanel data={summary} onPin={handlePin} pinnedSet={pinnedSet} />}
               
               {!summary && !loading && (
-                <div className="glass-panel p-8 text-center border-dashed border-dark-border mb-8">
+                <div className="glass-panel p-8 text-center border-dashed border-dark-border mx-auto w-full h-full flex flex-col justify-center items-center">
                   <BrainCircuit className="mx-auto text-gray-600 mb-4" size={48} />
                   <h3 className="text-xl font-semibold text-gray-300 mb-2">Awaiting Neural Context</h3>
                   <p className="text-gray-500 max-w-sm mx-auto">
@@ -192,9 +200,42 @@ export default function App() {
                 </div>
               )}
             </div>
+          </div>
 
-            <div className="lg:col-span-5">
-              <InteractiveTimeline logs={displayLogs} />
+          {/* Bottom Section: Toggle UI */}
+          <div className="max-w-4xl mx-auto w-full">
+            <div className="flex justify-center mb-6">
+              <div className="glass-panel flex p-1 rounded-xl">
+                <button
+                  onClick={() => setActiveTab("events")}
+                  className={`px-6 py-2 rounded-lg font-medium text-sm transition-all ${
+                    activeTab === "events" 
+                      ? 'bg-primary-main text-white shadow-md' 
+                      : 'text-gray-400 hover:text-gray-200'
+                  }`}
+                >
+                  Event Stream
+                </button>
+                <button
+                  onClick={() => setActiveTab("saved")}
+                  className={`px-6 py-2 rounded-lg font-medium text-sm transition-all ${
+                    activeTab === "saved" 
+                      ? 'bg-primary-main text-white shadow-md' 
+                      : 'text-gray-400 hover:text-gray-200'
+                  }`}
+                >
+                  Saved Summaries
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className="min-h-[400px]">
+              {activeTab === "events" ? (
+                <InteractiveTimeline logs={displayLogs} />
+              ) : (
+                <SavedSummaries pinned={pinned} setPinned={setPinned} />
+              )}
             </div>
           </div>
         </main>
