@@ -5,6 +5,28 @@ import { Clock, Code, Search, RefreshCw, Activity, ChevronRight } from 'lucide-r
 export default function InteractiveTimeline({ logs }) {
   const [expandedId, setExpandedId] = useState(null);
   const [showJsonMap, setShowJsonMap] = useState({});
+  const [explanations, setExplanations] = useState({});
+  const [explaining, setExplaining] = useState({});
+
+  const handleExplain = async (e, id, log) => {
+    e.stopPropagation();
+    setExplaining(prev => ({ ...prev, [id]: true }));
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/explain-log`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ log_details: log })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExplanations(prev => ({ ...prev, [id]: data }));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setExplaining(prev => ({ ...prev, [id]: false }));
+    }
+  };
 
   const toggleJson = (e, id) => {
     e.stopPropagation();
@@ -20,15 +42,23 @@ export default function InteractiveTimeline({ logs }) {
       const title = parsed?.title || log.title;
       const file = parsed?.file || log.file;
       const snippet = parsed?.snippet;
+      const intent = parsed?.intent;
+      const reasoning = parsed?.reasoning_tag;
+      const brief = parsed?.brief;
+      const summary_data = parsed?.summary_data;
       
+      const meta = { intent, reasoning, brief, summary_data };
+
+      if (log.action === 'session_summary') 
+        return { Icon: Activity, color: 'text-purple-400', bg: 'bg-purple-400/10', text: `Session Summary Generated`, data: { ...meta } };
       if (type === 'code' || log.action === 'file_modified' || log.action === 'file_edit') 
-        return { Icon: Code, color: 'text-secondary-main', bg: 'bg-secondary-main/10', text: `Modified ${file || log.app}`, data: { file: file || log.app, snippet: snippet } };
+        return { Icon: Code, color: 'text-secondary-main', bg: 'bg-secondary-main/10', text: `Modified ${file || log.app}`, data: { file: file || log.app, snippet: snippet, ...meta } };
       if (type === 'search' || log.action === 'browser_activity') 
-        return { Icon: Search, color: 'text-primary-main', bg: 'bg-primary-main/10', text: `Searched: ${title || parsed?.text || log.details}`, data: { query: title || parsed?.text || log.details, source: log.app } };
+        return { Icon: Search, color: 'text-primary-main', bg: 'bg-primary-main/10', text: `Searched: ${title || parsed?.text || log.details}`, data: { query: title || parsed?.text || log.details, source: log.app, ...meta } };
       if (log.action === 'app_switch') 
-        return { Icon: RefreshCw, color: 'text-pink-400', bg: 'bg-pink-400/10', text: `Switched to ${log.app}`, data: { app: log.app, action: log.action } };
+        return { Icon: RefreshCw, color: 'text-pink-400', bg: 'bg-pink-400/10', text: `Switched to ${log.app}`, data: { app: log.app, action: log.action, ...meta } };
       
-      return { Icon: Activity, color: 'text-green-400', bg: 'bg-green-400/10', text: `${log.action} in ${log.app}`, data: null };
+      return { Icon: Activity, color: 'text-green-400', bg: 'bg-green-400/10', text: `${log.action} in ${log.app}`, data: { ...meta } };
     } catch {
       return { Icon: Activity, color: 'text-gray-400', bg: 'bg-gray-400/10', text: `${log.action} in ${log.app}`, data: null };
     }
@@ -97,20 +127,55 @@ export default function InteractiveTimeline({ logs }) {
                            {data?.query && (
                              <div><span className="text-gray-500 font-semibold">Query:</span> {data.query}</div>
                            )}
+                           {data?.intent && data.intent !== 'general' && (
+                             <div className="flex gap-2 items-center mt-1">
+                               <span className="text-gray-500 font-semibold">Intent:</span> 
+                               <span className="bg-primary-main/20 text-primary-main px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider">{data.intent}</span>
+                             </div>
+                           )}
+                           {data?.reasoning && (
+                             <div><span className="text-gray-500 font-semibold">Agent Note:</span> {data.reasoning}</div>
+                           )}
+                           {data?.summary_data && (
+                             <div className="space-y-1 mt-2 bg-dark-bg p-2 rounded border border-purple-500/30">
+                               <div><span className="text-purple-400 font-semibold">Focus Score:</span> <span className={data.summary_data.focus_score > 70 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>{data.summary_data.focus_score}/100</span></div>
+                               <div><span className="text-purple-400 font-semibold">Patterns Detected:</span> {data.summary_data.patterns.join(", ") || "None"}</div>
+                               {data.brief && <div className="mt-2 text-gray-300 italic">"{data.brief.split('\\n')[0]}"</div>}
+                             </div>
+                           )}
                            
-                           <div className="pt-2 mt-2 border-t border-gray-800">
+                           <div className="pt-2 mt-2 border-t border-gray-800 flex justify-between items-center">
                              <button 
                                onClick={(e) => toggleJson(e, i)}
-                               className="text-[10px] text-gray-500 hover:text-gray-300 font-semibold mb-2 bg-dark-bg px-2 py-1 rounded"
+                               className="text-[10px] text-gray-500 hover:text-gray-300 font-semibold bg-dark-bg px-2 py-1 rounded"
                              >
                                {showJsonMap[i] ? 'Hide Original JSON' : 'Show Original JSON'}
                              </button>
-                             {showJsonMap[i] && (
-                               <pre className="font-mono text-[10px] text-blue-400/70 overflow-x-auto bg-dark-bg p-2 rounded">
-                                 {typeof log.details === 'string' ? log.details : JSON.stringify(log.details, null, 2)}
-                               </pre>
+                             
+                             {log.action !== 'session_summary' && (
+                               <button 
+                                 onClick={(e) => handleExplain(e, i, log)}
+                                 disabled={explaining[i]}
+                                 className="text-[10px] text-primary-main hover:text-primary-glow font-semibold bg-primary-main/10 px-2 py-1 rounded flex items-center gap-1 transition-colors"
+                               >
+                                 {explaining[i] ? 'Analyzing...' : '🧠 Explain with AI'}
+                               </button>
                              )}
                            </div>
+                           
+                           {explanations[i] && (
+                             <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="bg-dark-bg p-3 rounded border border-primary-main/30 space-y-1.5 text-[11px] mt-2">
+                               <div><span className="text-primary-main font-semibold">WHAT:</span> <span className="text-gray-300">{explanations[i].what}</span></div>
+                               <div><span className="text-secondary-main font-semibold">WHY:</span> <span className="text-gray-300">{explanations[i].why}</span></div>
+                               <div><span className="text-green-400 font-semibold">IMPACT:</span> <span className="text-gray-300">{explanations[i].impact}</span></div>
+                             </motion.div>
+                           )}
+
+                           {showJsonMap[i] && (
+                             <pre className="font-mono text-[10px] text-blue-400/70 overflow-x-auto bg-dark-bg p-2 rounded mt-2">
+                               {typeof log.details === 'string' ? log.details : JSON.stringify(log.details, null, 2)}
+                             </pre>
+                           )}
                         </div>
                       </motion.div>
                     )}

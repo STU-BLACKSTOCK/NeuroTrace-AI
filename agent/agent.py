@@ -16,11 +16,16 @@ from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+from analyzer import analyze_session
+from ai import generate_ai_summary, generate_rule_based_summary
+from utils import detect_intent, detect_failure
+
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 BACKEND_URL = "http://localhost:8000"
 WATCH_FOLDER = str(Path.home() / "Documents")   # Change to your project folder
 POLL_INTERVAL = 2.5          # seconds
-IDLE_THRESHOLD = 300         # 5 minutes = new session
+IDLE_THRESHOLD = 120        # 2 minutes gap = new session
+AUTO_PIN_THRESHOLD = 600                 # 10 minutes gap = auto pin session
 LOG_FILE = "activity_log.jsonl"
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -131,7 +136,8 @@ class ChangeHandler(FileSystemEventHandler):
                 snippet = ""
                 
         if log_type == "code" and snippet:
-            log = make_log("file_edit", "FileSystem", event.src_path, type="code", file=os.path.basename(event.src_path), snippet=snippet)
+            intent_data = detect_intent(snippet, "")
+            log = make_log("file_edit", "FileSystem", event.src_path, type="code", file=os.path.basename(event.src_path), snippet=snippet, **intent_data)
         else:
             log = make_log("file_modified", "FileSystem", event.src_path)
             
@@ -165,6 +171,7 @@ class ActivityAgent:
         self.last_title = None
         self.last_event_time = time.time()
         self.session_id = self._new_session_id()
+        self.session_events = []
 
     def _new_session_id(self) -> str:
         return datetime.datetime.utcnow().strftime("session_%Y%m%d_%H%M%S")
@@ -173,8 +180,44 @@ class ActivityAgent:
         now = time.time()
         idle = now - self.last_event_time
 
-        # Session detection: gap > 5 min → new session
+        if "intent" not in log:
+            log["intent"] = "neutral"
+        if "status" not in log:
+            log["status"] = "neutral"
+        if "context_tags" not in log:
+            log["context_tags"] = []
+        if "reasoning_tag" not in log:
+            log["reasoning_tag"] = ""
+
+        # Session detection: gap > threshold
         if idle > IDLE_THRESHOLD:
+            if self.session_events:
+                summary = analyze_session(self.session_events)
+                
+                ai_summary = generate_ai_summary(summary)
+                fallback_summary = generate_rule_based_summary(summary)
+                final_summary = ai_summary if ai_summary else fallback_summary
+                
+                print("\n" + "="*50)
+                print("🌟 RESUME BRIEF 🌟")
+                print(f"Task: {summary.get('primary_task', 'general')}")
+                print(f"Patterns detected: {', '.join(summary.get('patterns', []))}")
+                print(f"Focus score: {summary.get('focus_score', 100)}")
+                print(f"Failures: {len(summary.get('failures', []))}")
+                print(f"Distractions: {summary.get('distractions', 0)}")
+                print(f"Flow: {summary.get('flow', 'None')}")
+                print(f"Last Activity: {summary.get('last_activity', 'Unknown')}\n")
+                print(f"Reasoning: {summary.get('reasoning', 'General workflow.')}\n")
+                print(f"Summary:\n{final_summary}")
+                print("="*50 + "\n")
+                
+                brief_log = make_log("session_summary", "Agent", "Generated resume brief", brief=final_summary, summary_data=summary)
+                brief_log["session_id"] = self.session_id
+                append_local(brief_log)
+                send_to_backend(brief_log)
+
+            self.session_events = []
+
             sep = make_log("session_start", "System",
                            f"New session after {int(idle)}s idle. ID={self._new_session_id()}")
             self.session_id = self._new_session_id()
@@ -183,8 +226,9 @@ class ActivityAgent:
 
         log["session_id"] = self.session_id
         self.last_event_time = now
+        
+        self.session_events.append(log)
 
-        print(f"[{log['timestamp']}] {log['action']:18s} | {log['app']:20s} | {log['details'][:80]}")
         append_local(log)
         send_to_backend(log)
 
@@ -207,10 +251,11 @@ class ActivityAgent:
                 
             details = f"{self.last_app} → {app} | {title}" if self.last_app and action != "browser_activity" else f"{app} | {title}"
             
+            intent_data = detect_intent("", title)
             if log_type == "search":
-                log = make_log(action, app, details, type="search", title=title)
+                log = make_log(action, app, details, type="search", title=title, **intent_data)
             else:
-                log = make_log(action, app, details)
+                log = make_log(action, app, details, **intent_data)
                 
             self.emit(log)
             self.last_app = app
@@ -235,9 +280,22 @@ class ActivityAgent:
                            f"Agent started. Watching: {watch_path}")
         self.emit(startup)
 
+        last_auto_pin_trigger = 0
+
         try:
             while True:
                 self.check_window()
+                
+                # Check for 10-minute idle auto-pin
+                idle = time.time() - self.last_event_time
+                if idle > AUTO_PIN_THRESHOLD and time.time() - last_auto_pin_trigger > AUTO_PIN_THRESHOLD:
+                    print("Idle for 10 minutes, triggering auto-summary to backend...")
+                    try:
+                        requests.post(f"{BACKEND_URL}/idle")
+                    except Exception as e:
+                        print(f"Failed to trigger auto-summary: {e}")
+                    last_auto_pin_trigger = time.time()
+                
                 time.sleep(POLL_INTERVAL)
         except KeyboardInterrupt:
             print("\n⏹ Agent stopped by user.")

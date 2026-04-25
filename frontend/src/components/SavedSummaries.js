@@ -59,6 +59,11 @@ export default function SavedSummaries({ pinned, setPinned }) {
                 <div className="flex items-center gap-2 mb-1">
                   <Star size={14} className="text-primary-main fill-primary-main" />
                   <span className="font-semibold text-gray-200 line-clamp-1">{title}</span>
+                  {item.auto_generated && (
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider whitespace-nowrap ml-2 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                      ⚡ Auto Saved
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-1 text-xs text-gray-500 font-mono">
                   <Clock size={12} />

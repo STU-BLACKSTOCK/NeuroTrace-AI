@@ -7,7 +7,7 @@ import os
 import json
 import sqlite3
 from datetime import datetime, UTC
-from typing import List, Optional
+from typing import List, Optional, Any
 from contextlib import asynccontextmanager
 
 import logging
@@ -22,6 +22,7 @@ load_dotenv()
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 
@@ -79,6 +80,10 @@ def init_db():
             timestamp TEXT    NOT NULL
         )
     """)
+    try:
+        conn.execute("ALTER TABLE pinned_summaries ADD COLUMN auto_generated BOOLEAN DEFAULT 0")
+    except Exception:
+        pass
     conn.commit()
     conn.close()
 
@@ -95,6 +100,12 @@ class LogEntry(BaseModel):
     file: Optional[str] = None
     snippet: Optional[str] = None
     title: Optional[str] = None
+    intent: Optional[str] = None
+    status: Optional[str] = None
+    reasoning_tag: Optional[str] = None
+    context_tags: Optional[List[str]] = None
+    brief: Optional[str] = None
+    summary_data: Optional[dict] = None
 
 
 class SummaryResponse(BaseModel):
@@ -208,8 +219,9 @@ Logs:
 {prompt}
 """
     try:
+        logger.info(f"Sending prompt to Gemini: {prompt[:100]}...")
         response = await gemini_client.aio.models.generate_content(
-            model="gemini-3-flash-preview",
+            model=GEMINI_MODEL,
             contents=prompt_template,
             config={"response_mime_type": "application/json"}
         )
@@ -274,6 +286,12 @@ async def ingest_log(entry: LogEntry):
     if entry.file: extra_data["file"] = entry.file
     if entry.snippet: extra_data["snippet"] = entry.snippet
     if entry.title: extra_data["title"] = entry.title
+    if entry.intent: extra_data["intent"] = entry.intent
+    if entry.status: extra_data["status"] = entry.status
+    if entry.reasoning_tag: extra_data["reasoning_tag"] = entry.reasoning_tag
+    if entry.context_tags: extra_data["context_tags"] = entry.context_tags
+    if entry.brief: extra_data["brief"] = entry.brief
+    if entry.summary_data: extra_data["summary_data"] = entry.summary_data
 
     sqlite_details = json.dumps({"text": entry.details, **extra_data}) if extra_data else entry.details
     supabase_details = {"text": entry.details, **extra_data} if extra_data else {"text": entry.details}
@@ -319,6 +337,12 @@ async def ingest_logs_batch(entries: List[LogEntry]):
         if e.file: extra_data["file"] = e.file
         if e.snippet: extra_data["snippet"] = e.snippet
         if e.title: extra_data["title"] = e.title
+        if e.intent: extra_data["intent"] = e.intent
+        if e.status: extra_data["status"] = e.status
+        if e.reasoning_tag: extra_data["reasoning_tag"] = e.reasoning_tag
+        if e.context_tags: extra_data["context_tags"] = e.context_tags
+        if e.brief: extra_data["brief"] = e.brief
+        if e.summary_data: extra_data["summary_data"] = e.summary_data
         sqlite_details = json.dumps({"text": e.details, **extra_data}) if extra_data else e.details
         sqlite_batch.append((e.timestamp, e.app, e.action, sqlite_details, e.session_id or "unknown", now))
         
@@ -533,7 +557,8 @@ async def get_pinned_summaries():
             "session_id": r["session_id"],
             "timestamp": r["timestamp"],
             "summary": summary_list,
-            "pinned": True
+            "pinned": True,
+            "auto_generated": bool(r["auto_generated"]) if "auto_generated" in r.keys() else False
         })
     return results
 
@@ -560,3 +585,98 @@ async def launch_widget():
     except Exception as e:
         logger.error(f"Failed to launch widget: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to launch widget: {e}")
+
+class ExplainRequest(BaseModel):
+    log_details: dict
+
+@app.post("/explain-log", status_code=200)
+async def explain_log(request: ExplainRequest):
+    """Generate an on-demand AI explanation for a single log event."""
+    if not gemini_client:
+        return {"what": "Unavailable", "why": "API Key missing", "impact": "None"}
+    
+    prompt = f"""
+Analyze this log event and explain what the user did, why, and its impact.
+Log: {json.dumps(request.log_details)}
+
+Return EXACTLY a JSON object with this format:
+{{
+    "what": "What user did",
+    "why": "Why they likely did it",
+    "impact": "Impact on their workflow"
+}}
+Return ONLY valid JSON.
+"""
+    try:
+        response = await gemini_client.aio.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=prompt,
+        )
+        text = response.text.strip()
+        if text.startswith("```json"): text = text[7:]
+        if text.endswith("```"): text = text[:-3]
+        return json.loads(text.strip())
+    except Exception as e:
+        logger.error(f"Error explaining log: {e}")
+        return {"what": "Error", "why": "Failed to generate explanation.", "impact": "N/A"}
+
+@app.post("/idle", status_code=200)
+async def handle_idle():
+    """Triggered by agent when user is idle for 10 minutes. Generates and auto-pins summary."""
+    conn = get_db()
+    
+    # Fetch recent logs
+    rows = conn.execute("SELECT * FROM logs ORDER BY received_at DESC LIMIT 40").fetchall()
+    logs = [dict(r) for r in rows]
+    logs.reverse()
+    logs = deduplicate_logs(logs)
+    
+    if not logs or len(logs) < 3:
+        conn.close()
+        return {"status": "skipped", "reason": "Not enough logs to generate auto-summary"}
+        
+    session_id = logs[-1].get("session_id", "unknown")
+
+    # Build prompt
+    lines = []
+    for log in logs:
+        details_text = log['details']
+        extra = ""
+        try:
+            parsed = json.loads(details_text)
+            if isinstance(parsed, dict) and "text" in parsed:
+                details_text = parsed["text"]
+                if "snippet" in parsed:
+                    extra += f"\n  [Code Snippet]:\n  {parsed['snippet']}"
+                if "title" in parsed:
+                    extra += f"\n  [Search Title]: {parsed['title']}"
+        except (json.JSONDecodeError, TypeError):
+            pass
+            
+        lines.append(f"[{log['timestamp']}] {log['action']} | App: {log['app']} | {details_text}{extra}")
+    prompt = "\n".join(lines)
+
+    summary = await call_gemini(prompt)
+    now = datetime.now(UTC).isoformat().replace("+00:00", "Z")
+    
+    # Save to pinned_summaries with auto_generated=1
+    summary_json = json.dumps(summary)
+    conn.execute(
+        "INSERT INTO pinned_summaries (session_id, summary, timestamp, auto_generated) VALUES (?, ?, ?, 1)",
+        (session_id, summary_json, now)
+    )
+    conn.commit()
+    conn.close()
+    
+    if supabase:
+        try:
+            supabase.table("pinned_summaries").insert({
+                "session_id": session_id,
+                "summary": summary,
+                "timestamp": now,
+                "auto_generated": True
+            }).execute()
+        except Exception as e:
+            logger.error(f"Supabase insert failed for idle summary: {e}")
+
+    return {"status": "success", "message": "Auto-pinned idle summary generated"}
