@@ -3,9 +3,6 @@
 > **AI-powered work activity reconstruction platform**  
 > NeuroTrace AI intelligently tracks user activity, reconstructs working sessions, and generates contextual AI summaries so users can instantly continue where they left off.
 
-<p align="center">
-  <img src="./assets/banner.png" alt="NeuroTrace AI Banner" width="100%" />
-</p>
 
 ---
 
@@ -28,21 +25,21 @@
 
 ## Dashboard
 <p align="center">
-  <img src="./assets/dashboard.png" alt="Dashboard UI" width="90%" />
+  <img src="./asserts/dashboard.png" alt="Dashboard UI" width="90%" />
 </p>
 
 ---
 
 ## Activity Timeline
 <p align="center">
-  <img src="./assets/activity-feed.png" alt="Activity Feed UI" width="90%" />
+  <img src="./asserts/activity-feed.png" alt="Activity Feed UI" width="90%" />
 </p>
 
 ---
 
 ## AI Summary Panel
 <p align="center">
-  <img src="./assets/summary-panel.png" alt="AI Summary UI" width="90%" />
+  <img src="./asserts/summary-panel.png" alt="AI Summary UI" width="90%" />
 </p>
 
 ---
