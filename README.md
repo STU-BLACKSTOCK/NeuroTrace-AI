@@ -25,21 +25,21 @@
 
 ## Dashboard
 <p align="center">
-  <img src="./asserts/dashboard.png" alt="Dashboard UI" width="90%" />
+  <img src="./asserts/dashboard" alt="Dashboard UI" width="90%" />
 </p>
 
 ---
 
 ## Activity Timeline
 <p align="center">
-  <img src="./asserts/activity-feed.png" alt="Activity Feed UI" width="90%" />
+  <img src="./asserts/activity-feed" alt="Activity Feed UI" width="90%" />
 </p>
 
 ---
 
 ## AI Summary Panel
 <p align="center">
-  <img src="./asserts/summary-panel.png" alt="AI Summary UI" width="90%" />
+  <img src="./asserts/summary-panel" alt="AI Summary UI" width="90%" />
 </p>
 
 ---
